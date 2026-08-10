@@ -9,11 +9,6 @@
     <!-- Technical SEO: Canonical & Language Base -->
     <link rel="canonical" href="https://www.spfinlegal.com/">
     
-    <!-- Favicon & Apple Touch Icons (Prevents 404 Logs) -->
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
-
     <!-- Open Graph / Social Sharing Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.spfinlegal.com/">
@@ -639,7 +634,7 @@
         <i class="fa-brands fa-whatsapp text-3xl"></i>
     </a>
 
-    <!-- Scripts: Mobile Menu & Dynamic Base64 Logo Generator -->
+    <!-- Scripts: Mobile Menu & Dynamic Base64 Logo / Favicon Generator -->
     <script>
         const canvas = document.createElement('canvas');
         canvas.width = 300;
@@ -670,6 +665,17 @@
 
         const dataUrl = canvas.toDataURL('image/jpeg');
         
+        // Dynamically inject favicon and apple-touch-icon links to completely eliminate 404 logs on mobile/Linux
+        const faviconLink = document.createElement('link');
+        faviconLink.rel = 'icon';
+        faviconLink.href = dataUrl;
+        document.head.appendChild(faviconLink);
+
+        const appleTouchIconLink = document.createElement('link');
+        appleTouchIconLink.rel = 'apple-touch-icon';
+        appleTouchIconLink.href = dataUrl;
+        document.head.appendChild(appleTouchIconLink);
+
         ['brand-logo-1', 'brand-logo-2', 'brand-logo-3', 'brand-logo-footer'].forEach(id => {
             const el = document.getElementById(id);
             if(el) el.src = dataUrl;
