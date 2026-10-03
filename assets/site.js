@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Inject Luxury Mobile Quick Action Bar (Docked to bottom on phones)
+    // 3. Inject Luxury Mobile Quick Action Bar (Docked as floating pill, leaving bottom-right clear for AI Chatbot)
     if (!document.querySelector('.mobile-action-bar')) {
         const isBlogSub = location.pathname.includes('/blog/') && !location.pathname.endsWith('/blog/') && !location.pathname.endsWith('/blog/index.html');
         const prefix = isBlogSub ? '../' : '';
@@ -95,21 +95,17 @@ document.addEventListener("DOMContentLoaded", () => {
         bar.className = 'mobile-action-bar';
         bar.setAttribute('aria-label', 'Mobile Quick Actions');
         bar.innerHTML = `
-            <a href="${prefix}services.html" class="mobile-action-btn ${curPath.includes('services') ? 'active' : ''}">
+            <a href="${prefix}services.html" class="mobile-action-btn link-services ${curPath.includes('services') ? 'active' : ''}">
                 <i class="fa-solid fa-briefcase"></i>
                 <span>Services</span>
             </a>
             <a href="https://wa.me/919657712123?text=Hello%20S%20%26%20P%20Finlegal%20Advisory" target="_blank" rel="noopener noreferrer" class="mobile-action-btn pill-btn-wa">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <i class="fa-brands fa-whatsapp text-base"></i>
                 <span>WhatsApp</span>
             </a>
             <a href="tel:+919657712123" class="mobile-action-btn pill-btn-call">
-                <i class="fa-solid fa-phone text-sm"></i>
-                <span>Call Us</span>
-            </a>
-            <a href="${prefix}contact.html" class="mobile-action-btn ${curPath.includes('contact') ? 'active' : ''}">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>Office</span>
+                <i class="fa-solid fa-phone text-xs"></i>
+                <span>Call</span>
             </a>
         `;
         document.body.appendChild(bar);
