@@ -17,43 +17,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const mobileMenu = document.getElementById('mobile-menu');
     if (menuBtn && mobileMenu) {
         const icon = menuBtn.querySelector('i');
+        const openMenu = () => {
+            mobileMenu.classList.remove('hidden');
+            document.body.classList.add('mobile-menu-active');
+            if (icon) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        };
+        const closeMenu = () => {
+            mobileMenu.classList.add('hidden');
+            document.body.classList.remove('mobile-menu-active');
+            if (icon) {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        };
+
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isClosed = mobileMenu.classList.contains('hidden');
-            if (isClosed) {
-                mobileMenu.classList.remove('hidden');
-                if (icon) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                }
+            if (mobileMenu.classList.contains('hidden')) {
+                openMenu();
             } else {
-                mobileMenu.classList.add('hidden');
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+                closeMenu();
             }
         });
 
         // Close drawer when tapping any link inside
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+                closeMenu();
             });
         });
 
         // Close when clicking anywhere outside
         document.addEventListener('click', (e) => {
             if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
-                if (icon) {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
+                closeMenu();
             }
         });
     }
@@ -74,9 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
         menuBtn.parentNode.insertBefore(wrap, menuBtn);
     }
 
-    // 4. Ensure mobile menu drawer always has prominent WhatsApp & Call CTAs
+    // 4. Ensure mobile menu drawer has exactly ONE clean set of WhatsApp & Call CTAs (no duplicates)
     const mobileMenuEl = document.getElementById('mobile-menu');
-    if (mobileMenuEl && !mobileMenuEl.querySelector('.mobile-menu-ctas')) {
+    if (mobileMenuEl) {
+        // Remove any preexisting or duplicate CTA blocks
+        mobileMenuEl.querySelectorAll('.mobile-menu-ctas, .drawer-contact-block').forEach(el => el.remove());
+        
         const ctaWrap = document.createElement('div');
         ctaWrap.className = 'mobile-menu-ctas pt-4 mt-2 border-t border-slate-800 flex flex-col gap-2.5';
         ctaWrap.innerHTML = `
