@@ -1,42 +1,15 @@
-/* Shared styling, canvas logo, and mobile UX engine for S & P Finlegal Advisory */
+/* Official Branding & Mobile UX Engine for S & P Finlegal Advisory */
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Generate crisp vector/canvas logo for retina display
-    const canvas = document.createElement('canvas');
-    canvas.width = 300;
-    canvas.height = 300;
-    const ctx = canvas.getContext('2d');
-    
-    // Background circle
-    ctx.fillStyle = '#06172C';
-    ctx.beginPath();
-    ctx.arc(150, 150, 150, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Gold outer border ring
-    ctx.strokeStyle = '#D4AF37';
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.arc(150, 150, 145, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Central Monogram
-    ctx.fillStyle = '#D4AF37';
-    ctx.font = 'bold 95px "Playfair Display", Georgia, serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('S & P', 150, 135);
-
-    // Subtitle
-    ctx.font = 'bold 24px Inter, system-ui, sans-serif';
-    ctx.fillText('FINLEGAL', 150, 190);
-    
-    ctx.font = '18px Inter, system-ui, sans-serif';
-    ctx.fillText('- ADVISORY -', 150, 220);
-
-    const dataUrl = canvas.toDataURL('image/png');
-    
-    // Set all logo images
+    // 1. Ensure all brand logo images point to the official logo asset
+    const isBlog = window.location.pathname.includes('/blog/');
+    const logoSrc = isBlog ? '../assets/logo.png' : 'assets/logo.png';
     document.querySelectorAll('.brand-logo-img').forEach(el => {
-        el.src = dataUrl;
+        if (!el.getAttribute('src') || el.getAttribute('src') === '') {
+            el.src = logoSrc;
+        }
+        el.onerror = () => {
+            if (el.src !== logoSrc) el.src = logoSrc;
+        };
     });
 
     // 2. Mobile Menu Toggle with Animated Hamburger Icon & Outside-Click Close
@@ -85,30 +58,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Inject Luxury Mobile Quick Action Bar (Docked as floating pill, leaving bottom-right clear for AI Chatbot)
-    if (!document.querySelector('.mobile-action-bar')) {
-        const isBlogSub = location.pathname.includes('/blog/') && !location.pathname.endsWith('/blog/') && !location.pathname.endsWith('/blog/index.html');
-        const prefix = isBlogSub ? '../' : '';
-        const curPath = location.pathname;
-
-        const bar = document.createElement('nav');
-        bar.className = 'mobile-action-bar';
-        bar.setAttribute('aria-label', 'Mobile Quick Actions');
-        bar.innerHTML = `
-            <a href="${prefix}services.html" class="mobile-action-btn link-services ${curPath.includes('services') ? 'active' : ''}">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>Services</span>
+    // 3. Inject Mobile Header Quick Actions (WhatsApp & Call) into the top header next to menu button
+    if (menuBtn && !document.querySelector('.mobile-header-actions')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'mobile-header-actions';
+        wrap.setAttribute('aria-label', 'Quick Contact');
+        wrap.innerHTML = `
+            <a href="https://wa.me/919657712123?text=Hello%20S%20%26%20P%20Finlegal%20Advisory" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Quick Contact" class="mobile-header-btn btn-wa">
+                <i class="fa-brands fa-whatsapp"></i>
             </a>
-            <a href="https://wa.me/919657712123?text=Hello%20S%20%26%20P%20Finlegal%20Advisory" target="_blank" rel="noopener noreferrer" class="mobile-action-btn pill-btn-wa">
-                <i class="fa-brands fa-whatsapp text-base"></i>
-                <span>WhatsApp</span>
-            </a>
-            <a href="tel:+919657712123" class="mobile-action-btn pill-btn-call">
-                <i class="fa-solid fa-phone text-xs"></i>
-                <span>Call</span>
+            <a href="tel:+919657712123" aria-label="Call +91 96577 12123" class="mobile-header-btn btn-call">
+                <i class="fa-solid fa-phone"></i>
             </a>
         `;
-        document.body.appendChild(bar);
+        menuBtn.parentNode.insertBefore(wrap, menuBtn);
+    }
+
+    // 4. Ensure mobile menu drawer always has prominent WhatsApp & Call CTAs
+    const mobileMenuEl = document.getElementById('mobile-menu');
+    if (mobileMenuEl && !mobileMenuEl.querySelector('.mobile-menu-ctas')) {
+        const ctaWrap = document.createElement('div');
+        ctaWrap.className = 'mobile-menu-ctas pt-4 mt-2 border-t border-slate-800 flex flex-col gap-2.5';
+        ctaWrap.innerHTML = `
+            <a href="https://wa.me/919657712123?text=Hello%20S%20%26%20P%20Finlegal%20Advisory" target="_blank" rel="noopener noreferrer" class="w-full bg-green-600 hover:bg-green-700 text-white text-center py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-md">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Chat on WhatsApp
+            </a>
+            <a href="tel:+919657712123" class="w-full bg-navy-950 border border-gold-500/50 text-gold-400 hover:text-white text-center py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone text-xs"></i> Call +91 96577 12123
+            </a>
+        `;
+        mobileMenuEl.appendChild(ctaWrap);
     }
 
     // 4. Add subtle swipe hint for tables on mobile
