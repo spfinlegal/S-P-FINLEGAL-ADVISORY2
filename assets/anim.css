@@ -233,3 +233,61 @@ body.mobile-menu-active .mobile-header-actions {
   }
 }
 
+/* Laptop & Desktop Brand Title Size Enhancement (Bigger text for laptop only) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  header > div {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  .brand-title-nav {
+    font-size: 1.18rem !important;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+  .brand-sub-nav {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .brand-logo-nav {
+    width: 42px !important;
+    height: 42px !important;
+  }
+  header nav {
+    gap: 0.85rem !important;
+    font-size: 0.8rem !important;
+  }
+  header .nav-cta-wrap {
+    gap: 0.35rem !important;
+  }
+  header .nav-cta-wrap a {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    font-size: 0.72rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .brand-title-nav {
+    font-size: 1.55rem !important;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+  .brand-sub-nav {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .brand-logo-nav {
+    width: 52px !important;
+    height: 52px !important;
+  }
+  header nav {
+    gap: 1.75rem !important;
+  }
+}
+
